@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Me</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-card: #15151f;
+      --text-primary: #ededee;
+      --text-secondary: #a1a1aa;
+      --text-muted: #6b7280;
+      --border-color: #2a2a35;
+      --accent: #3b82f6;
+      --accent-dim: rgba(59, 130, 246, 0.08);
+      --transition: all 0.2s ease;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .logo span { color: var(--accent); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a.active { color: var(--accent); }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 0.3rem 0.8rem;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    .hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text-primary); }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    .page-header {
+      border-bottom: 1px solid var(--border-color);
+      padding: 2rem 0 1.5rem;
+      text-align: center;
+    }
+
+    .page-header h1 {
+      font-family: 'Courier New', monospace;
+      font-size: 2rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .page-header h1 span { color: var(--accent); }
+
+    .breadcrumb {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    .breadcrumb a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.8rem;
+      margin: 1.5rem 0;
+    }
+
+    /* --- Profile dengan Float --- */
+    .profile-image-wrapper {
+      float: left;
+      margin: 0 2rem 1rem 0;
+    }
+
+    .profile-placeholder {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      background: var(--bg-secondary);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--accent);
+    }
+
+    .profile-placeholder span {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    .status-badge {
+      display: inline-block;
+      margin-top: 0.5rem;
+      background: var(--accent-dim);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 0.7rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 20px;
+    }
+
+    .clearfix::after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+
+    /* --- Info List --- */
+    .info-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8rem;
+      margin: 1rem 0;
+    }
+
+    .info-list li {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+    }
+
+    .info-label {
+      color: var(--accent);
+      min-width: 70px;
+      font-size: 0.8rem;
+    }
+
+    .info-value {
+      color: var(--text-secondary);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 0.5rem 1.2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: var(--transition);
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: white;
+      border: 1px solid var(--accent);
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--accent);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .education-table-wrapper {
+      overflow-x: auto;
+      margin: 1rem 0;
+    }
+
+    .styled-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .styled-table th,
+    .styled-table td {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid var(--border-color);
+      text-align: left;
+    }
+
+    .styled-table th {
+      background: var(--bg-secondary);
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .tag {
+      background: var(--bg-primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-top: 1rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--border-color);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 1.5rem;
+      padding: 1rem 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -1.65rem;
+      top: 1.2rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+    }
+
+    .timeline-date {
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-title {
+      font-size: 0.95rem;
+      font-weight: 500;
+      margin-bottom: 0.2rem;
+    }
+
+    .timeline-org {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-desc {
+      font-size: 0.8rem;
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 1.5rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 2rem;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    footer a { color: var(--accent); text-decoration: none; }
+
+    @media (max-width: 600px) {
+      .profile-image-wrapper {
+        float: none;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 1rem;
+      }
+      .info-list {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        padding: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">&lt;<span>KITS</span>/&gt;</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html" class="active">About</a></li>
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <button class="theme-toggle" id="themeToggle" title="Ganti Tema">🌙</button>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <div class="page-header">
+      <h1>&lt;<span>About</span>/&gt;</h1>
+      <p class="breadcrumb">
+        <a href="index.html">Home</a> 
+      </p>
+    </div>
+
+    <div class="container">
+
+      <div>
+        <p class="section-title">Profil Saya</p>
+      </div>
+
+      <div class="card clearfix">
+          <div class="profile-image-wrapper">
+              <img src="img/pass fotoo.jpg" alt="Foto Ruddy Haristianata" 
+                  style="width: 140px; height: 150px; border-radius: 50%; object-fit: cover; border: 2px solid var(--accent);">
+          </div>
+
+          <h2 style="font-size:1.5rem; margin-bottom:0.2rem;">Ruddy Haristianata</h2>
+          <p style="color:var(--text-secondary); line-height:1.8; margin-bottom:1rem;">
+              Mahasiswa Ilmu Komputer semester 4 yang tertarik pada web development dan eksplorasi data. Fokus membangun website yang fungsional, sederhana, dan memberikan pengalaman pengguna yang baik.
+          </p>
+
+          <ul class="info-list">
+              <li><span class="info-label">Nama</span><span class="info-value">Ruddy Haristianata</span></li>
+              <li><span class="info-label">Email</span><span class="info-value">ryhtn1@email.com</span></li>
+              <li><span class="info-label">Jurusan</span><span class="info-value">Ilmu Komputer</span></li>
+              <li><span class="info-label">Semester</span><span class="info-value">4</span></li>
+              <li><span class="info-label">Kota</span><span class="info-value">Lampung</span></li>
+          </ul>
+
+          <div style="margin-top:1rem;">
+              <a href="contact.html" class="btn btn-primary">Hubungi Saya</a>
+              <a href="#" class="btn btn-outline" style="margin-left:0.5rem;">Download CV</a>
+          </div>
+      </div>
+      
+      <div style="margin-top: 2rem;">
+        <p class="section-title">Riwayat Pendidikan</p>
+        <p class="section-subtitle">Perjalanan akademik saya</p>
+      </div>
+
+      <div class="education-table-wrapper">
+        <table class="styled-table">
+          <thead>
+            <tr>
+              <th colspan="2">Institusi</th>
+              <th>Jurusan</th>
+              <th>Tahun</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:500;">Universitas Lampung</td>
+              <td style="color:var(--text-muted);">Lampung</td>
+              <td>S1 Ilmu Komputer</td>
+              <td>2024 - Sekarang</td>
+              <td rowspan="2" style="vertical-align:middle;"><span class="tag">Aktif</span></td>
+            </tr>
+            <tr>
+              <td colspan="2" style="color:var(--text-muted); font-size:0.75rem; padding-left:1.5rem;">
+          
+              </td>
+              <td colspan="2" style="color:var(--text-muted); font-size:0.75rem;"></td>
+            </tr>
+            <tr>
+              <td style="font-weight:500;">🏫 SMA Negeri 1 Lampung</td>
+              <td style="color:var(--text-muted);">Lampung</td>
+              <td>IPA</td>
+              <td>2021 - 2024</td>
+              <td><span class="tag">Lulus</span></td>
+            </tr>
+            <tr style="background: var(--accent-dim);">
+              <td colspan="5" style="text-align:center; font-size:0.75rem; padding:0.5rem;">
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+     
+      <div style="margin-top: 2rem;">
+        <p class="section-title">Pengalaman</p>
+        <p class="section-subtitle">Kegiatan & organisasi</p>
+      </div>
+
+    <div class="timeline">
+
+      <div class="timeline-item">
+        <div class="timeline-date">2025 - 20267b </div>
+        <div class="timeline-title">Pengembangan Web & Eksplorasi Data</div>
+        <div class="timeline-org">Pembelajaran Mandiri</div>
+        <div class="timeline-desc">
+          Mengembangkan project web menggunakan HTML, CSS, dan JavaScript serta mulai mempelajari dasar eksplorasi data.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2024 - 2026</div>
+        <div class="timeline-title">Aktif dalam Kegiatan Sosial</div>
+        <div class="timeline-org">Volunteer</div>
+        <div class="timeline-desc">
+          Terlibat dalam kegiatan mengajar dan berinteraksi langsung dengan lingkungan sosial untuk menambah pengalaman dan sudut pandang.
+        </div>
+      </div>
+
+      <div class="timeline-item">
+        <div class="timeline-date">2024</div>
+        <div class="timeline-title">Memulai Perjalanan di Ilmu Komputer</div>
+        <div class="timeline-org">Universitas Lampung</div>
+        <div class="timeline-desc">
+          Memulai studi di bidang Ilmu Komputer dan mulai mengenal dasar pemrograman serta pengembangan teknologi.
+        </div>
+      </div>
+
+    </div>
+
+    </div>
+  </div>
+
+  <script>
+    const themeBtn = document.getElementById('themeToggle');
+    let darkMode = true;
+    themeBtn.addEventListener('click', () => {
+      const root = document.documentElement.style;
+      if (darkMode) {
+        root.setProperty('--bg-primary', '#f8fafc');
+        root.setProperty('--bg-secondary', '#eef2ff');
+        root.setProperty('--bg-card', '#ffffff');
+        root.setProperty('--text-primary', '#0f172a');
+        root.setProperty('--text-secondary', '#334155');
+        root.setProperty('--border-color', '#cbd5e1');
+        root.setProperty('--text-muted', '#64748b');
+        themeBtn.textContent = '☀️';
+      } else {
+        root.setProperty('--bg-primary', '#0a0a0f');
+        root.setProperty('--bg-secondary', '#111118');
+        root.setProperty('--bg-card', '#15151f');
+        root.setProperty('--text-primary', '#ededee');
+        root.setProperty('--text-secondary', '#a1a1aa');
+        root.setProperty('--border-color', '#2a2a35');
+        root.setProperty('--text-muted', '#6b7280');
+        themeBtn.textContent = '🌙';
+      }
+      darkMode = !darkMode;
+    });
+
+    // HAMBURGER MENU
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        if (navLinks.style.display === 'flex') {
+          navLinks.style.display = 'none';
+        } else {
+          navLinks.style.display = 'flex';
+          navLinks.style.flexDirection = 'column';
+          navLinks.style.position = 'absolute';
+          navLinks.style.top = '70px';
+          navLinks.style.left = '0';
+          navLinks.style.right = '0';
+          navLinks.style.backgroundColor = 'var(--bg-secondary)';
+          navLinks.style.padding = '1rem';
+          navLinks.style.gap = '1rem';
+          navLinks.style.borderBottom = '1px solid var(--border-color)';
+          navLinks.style.zIndex = '1000';
+        }
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 700 && navLinks) {
+        navLinks.style.display = '';
+        navLinks.style.position = '';
+        navLinks.style.flexDirection = '';
+        navLinks.style.backgroundColor = '';
+        navLinks.style.padding = '';
+        navLinks.style.gap = '';
+        navLinks.style.borderBottom = '';
+      }
+    });
+  </script>
+</body>
+</html>

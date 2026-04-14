@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <style>
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0a0a0f;
+      color: #ededee;
+      font-family: Arial, Helvetica, sans-serif;
+      line-height: 1.6;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #111118;
+      border-bottom: 1px solid #2a2a35;
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: #ededee;
+    }
+
+    .logo span { color: #3b82f6; }
+
+    .nav-links {
+      display: flex;
+      gap: 25px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: #a1a1aa;
+      text-decoration: none;
+      font-size: 0.9rem;
+    }
+
+    .nav-links a:hover { color: #3b82f6; }
+    .nav-links a.active { color: #3b82f6; }
+
+    .theme-toggle {
+      background: #15151f;
+      border: 1px solid #2a2a35;
+      border-radius: 30px;
+      padding: 5px 12px;
+      cursor: pointer;
+      color: #ededee;
+    }
+
+    .hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 2px; background: #ededee; }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    .hero {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      padding: 50px 0;
+    }
+
+    .hero-label {
+      font-family: 'Courier New', monospace;
+      font-size: 0.8rem;
+      color: #3b82f6;
+      margin-bottom: 15px;
+    }
+
+    .hero-name {
+      font-family: 'Courier New', monospace;
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .hero-name .highlight { color: #3b82f6; }
+
+    .hero-role {
+      font-family: 'Courier New', monospace;
+      font-size: 1.2rem;
+      color: #a1a1aa;
+      margin-bottom: 20px;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 18px;
+      background: #3b82f6;
+      margin-left: 3px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    .hero-desc {
+      max-width: 500px;
+      color: #a1a1aa;
+      font-size: 0.95rem;
+      margin-bottom: 30px;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 8px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+      border: 1px solid #3b82f6;
+    }
+
+    .btn-primary:hover {
+      background: transparent;
+      color: #3b82f6;
+    }
+
+    .btn-outline {
+      border: 1px solid #2a2a35;
+      color: #a1a1aa;
+    }
+
+    .btn-outline:hover {
+      border-color: #3b82f6;
+      color: #3b82f6;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      background: #15151f;
+      padding: 4px 10px;
+      border-radius: 12px;
+      color: #a1a1aa;
+      border: 1px solid #2a2a35;
+      display: inline-block;
+      margin-right: 5px;
+      margin-bottom: 5px;
+    }
+
+    .tech-stack {
+      margin: 20px 0;
+    }
+
+    .tech-stack p {
+      font-size: 0.75rem;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      margin-top: 30px;
+      padding-top: 20px;
+      border-top: 1px solid #2a2a35;
+    }
+
+    .stat-number {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #3b82f6;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    .section-preview {
+      padding: 50px 0;
+      background-color: #111118;
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .section-subtitle {
+      color: #6b7280;
+      font-size: 0.8rem;
+      margin-bottom: 15px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .card {
+      background: #15151f;
+      border: 1px solid #2a2a35;
+      border-radius: 12px;
+      padding: 20px;
+    }
+
+    pre {
+      color: #a1a1aa;
+      font-size: 0.8rem;
+      font-family: 'Courier New', monospace;
+      line-height: 1.8;
+    }
+
+    footer {
+      text-align: center;
+      padding: 25px;
+      border-top: 1px solid #2a2a35;
+      font-size: 0.75rem;
+      color: #6b7280;
+    }
+
+    footer a { color: #3b82f6; text-decoration: none; }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-on-scroll {
+      opacity: 0;
+      animation: fadeInUp 0.5s ease forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    @media (max-width: 700px) {
+      .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .hero-name {
+        font-size: 2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">&lt;<span>KITS</span>/&gt;</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html" class="active">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="skills.html">Skills</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div style="display:flex; align-items:center; gap:8px;">
+      <button class="theme-toggle" id="themeToggle">🌙</button>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-name animate-on-scroll delay-1">
+          Hi, I'm <span class="highlight">Kitings</span>
+        </h1>
+        <p class="hero-role animate-on-scroll delay-2">
+          &gt; <span id="typingText"></span><span class="cursor"></span>
+        </p>
+        <p class="hero-desc animate-on-scroll delay-3">
+          Mahasiswa Ilmu Komputer yang sedang belajar web development.
+          Saya suka membuat website sederhana yang fungsional.
+        </p>
+        <div class="hero-stats animate-on-scroll delay-5">
+          <div class="stat-item">
+            <div class="stat-number">10+</div>
+            <div class="stat-label">Proyek</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number">4</div>
+            <div class="stat-label">Semester</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-preview">
+    <div class="container">
+      <div class="grid-2">
+        <div class="animate-on-scroll delay-1">
+          <p class="section-title">Tentang Saya</p>
+          <p class="section-subtitle">Mahasiswa semester 4</p>
+          <p style="color:#a1a1aa; line-height:1.8; margin-bottom:20px;">
+          Halo gua Kiting, gua mahasiswa ilmu Komputer semester 4 yang aktif pada <br>
+          ikut serta dalam isu Sosial, Relawan, dan memiliki minat terhadap Teknologi.
+          </p>
+          <a href="about.html" class="btn btn-outline">Baca Selengkapnya →</a>
+        </div>
+        <div class="animate-on-scroll delay-2">
+          <div class="card">
+            <p style="font-family:'Courier New',monospace; color:#3b82f6; font-size:0.8rem; margin-bottom:15px;">
+              // biodata singkat
+            </p>
+            <pre><code><span style="color:#6b7280;">{</span>
+  <span style="color:#3b82f6;">"nama"</span>: <span style="color:#00ffaa;">"Ruddy Haristianata"</span>,
+  <span style="color:#3b82f6;">"jurusan"</span>: <span style="color:#00ffaa;">"Ilmu Komputer"</span>,
+  <span style="color:#3b82f6;">"semester"</span>: <span style="color:#ffaa00;">4</span>,
+  <span style="color:#3b82f6;">"fokus"</span>: <span style="color:#00ffaa;">"Data Engineer"</span>,
+  <span style="color:#3b82f6;">"status"</span>: <span style="color:#00ffaa;">"Belajar"</span>
+<span style="color:#6b7280;">}</span></code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const roles = ["Web Developer", "Frontend Learner", "C++ Student", "Python Beginner"];
+    let roleIndex = 0;
+    let charIndex = 0;
+    let isDeleting = false;
+    const typingElement = document.getElementById("typingText");
+
+    function typeEffect() {
+      const currentRole = roles[roleIndex];
+      if (isDeleting) {
+        typingElement.textContent = currentRole.substring(0, charIndex - 1);
+        charIndex--;
+      } else {
+        typingElement.textContent = currentRole.substring(0, charIndex + 1);
+        charIndex++;
+      }
+
+      if (!isDeleting && charIndex === currentRole.length) {
+        isDeleting = true;
+        setTimeout(typeEffect, 2000);
+        return;
+      }
+
+      if (isDeleting && charIndex === 0) {
+        isDeleting = false;
+        roleIndex = (roleIndex + 1) % roles.length;
+        setTimeout(typeEffect, 300);
+        return;
+      }
+
+      const speed = isDeleting ? 80 : 120;
+      setTimeout(typeEffect, speed);
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      setTimeout(typeEffect, 500);
+    });
+
+    const themeBtn = document.getElementById('themeToggle');
+    let darkMode = true;
+    themeBtn.addEventListener('click', () => {
+      if (darkMode) {
+        document.body.style.backgroundColor = '#f8fafc';
+        document.body.style.color = '#0f172a';
+        document.querySelector('.navbar').style.backgroundColor = '#eef2ff';
+        document.querySelector('.navbar').style.borderBottomColor = '#cbd5e1';
+        document.querySelectorAll('.nav-links a').forEach(a => a.style.color = '#334155');
+        document.querySelector('.logo').style.color = '#0f172a';
+        document.querySelector('.theme-toggle').style.background = '#ffffff';
+        document.querySelector('.theme-toggle').style.borderColor = '#cbd5e1';
+        document.querySelectorAll('.card').forEach(c => c.style.background = '#ffffff');
+        document.querySelectorAll('.tag').forEach(t => { t.style.background = '#f1f5f9'; t.style.borderColor = '#cbd5e1'; });
+        document.querySelector('.section-preview').style.backgroundColor = '#eef2ff';
+        themeBtn.textContent = '☀️';
+      } else {
+        document.body.style.backgroundColor = '#0a0a0f';
+        document.body.style.color = '#ededee';
+        document.querySelector('.navbar').style.backgroundColor = '#111118';
+        document.querySelector('.navbar').style.borderBottomColor = '#2a2a35';
+        document.querySelectorAll('.nav-links a').forEach(a => a.style.color = '#a1a1aa');
+        document.querySelector('.logo').style.color = '#ededee';
+        document.querySelector('.theme-toggle').style.background = '#15151f';
+        document.querySelector('.theme-toggle').style.borderColor = '#2a2a35';
+        document.querySelectorAll('.card').forEach(c => c.style.background = '#15151f');
+        document.querySelectorAll('.tag').forEach(t => { t.style.background = '#15151f'; t.style.borderColor = '#2a2a35'; });
+        document.querySelector('.section-preview').style.backgroundColor = '#111118';
+        themeBtn.textContent = '🌙';
+      }
+      darkMode = !darkMode;
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        if (navLinks.style.display === 'flex') {
+          navLinks.style.display = 'none';
+        } else {
+          navLinks.style.display = 'flex';
+          navLinks.style.flexDirection = 'column';
+          navLinks.style.position = 'absolute';
+          navLinks.style.top = '70px';
+          navLinks.style.left = '0';
+          navLinks.style.right = '0';
+          navLinks.style.backgroundColor = '#111118';
+          navLinks.style.padding = '20px';
+          navLinks.style.gap = '15px';
+          navLinks.style.borderBottom = '1px solid #2a2a35';
+          navLinks.style.zIndex = '1000';
+        }
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 700 && navLinks) {
+        navLinks.style.display = '';
+        navLinks.style.position = '';
+        navLinks.style.flexDirection = '';
+        navLinks.style.backgroundColor = '';
+        navLinks.style.padding = '';
+        navLinks.style.gap = '';
+        navLinks.style.borderBottom = '';
+      }
+    });
+  </script>
+</body>
+</html>

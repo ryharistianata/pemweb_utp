@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill</title>
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-card: #15151f;
+      --text-primary: #ededee;
+      --text-secondary: #a1a1aa;
+      --text-muted: #6b7280;
+      --border-color: #2a2a35;
+      --neon-blue: #3b82f6;
+      --neon-blue-dim: rgba(59, 130, 246, 0.12);
+      --neon-blue-glow: rgba(59, 130, 246, 0.4);
+      --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.3);
+      --transition: all 0.2s ease;
+    }
+
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--bg-secondary);
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+    }
+
+    .logo {
+      font-family: 'Courier New', monospace;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-decoration: none;
+      color: var(--text-primary);
+    }
+
+    .logo span { color: var(--neon-blue); }
+
+    .nav-links {
+      display: flex;
+      gap: 1.8rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .nav-links a:hover { color: var(--neon-blue); }
+    .nav-links a.active { color: var(--neon-blue); }
+
+    .theme-toggle {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 30px;
+      padding: 0.3rem 0.8rem;
+      cursor: pointer;
+      color: var(--text-primary);
+    }
+
+    .hamburger { display: none; flex-direction: column; gap: 4px; cursor: pointer; }
+    .hamburger span { width: 22px; height: 2px; background: var(--text-primary); }
+
+    @media (max-width: 700px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+    }
+
+    .page-header {
+      background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%);
+      border-bottom: 1px solid var(--border-color);
+      padding: 3rem 0 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0, 212, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+
+    .page-header-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .page-header h1 {
+      font-family: 'Courier New', monospace;
+      font-size: 2.5rem;
+      color: var(--text-primary);
+    }
+
+    .page-header h1 span { color: var(--neon-blue); }
+
+    .breadcrumb {
+      font-family: 'Courier New', monospace;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    .breadcrumb a {
+      color: var(--neon-blue);
+      text-decoration: none;
+    }
+
+    .filter-bar {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+      margin: 2rem 0 1.5rem 0;
+    }
+
+    .filter-btn {
+      padding: 0.3rem 1rem;
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      border-radius: 30px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-btn:hover {
+      border-color: var(--neon-blue);
+      color: var(--neon-blue);
+    }
+
+    .filter-btn.active-filter {
+      background: var(--neon-blue-dim);
+      border-color: var(--neon-blue);
+      color: var(--neon-blue);
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+
+    .skill-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.2rem;
+      transition: var(--transition);
+    }
+
+    .skill-card:hover {
+      border-color: var(--neon-blue);
+      transform: translateY(-2px);
+    }
+
+    .skill-card.hidden { display: none; }
+
+    .skill-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.6rem;
+    }
+
+    .skill-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .skill-percent {
+      font-size: 0.8rem;
+      color: var(--neon-blue);
+      font-family: monospace;
+      font-weight: 500;
+    }
+
+    .progress-bar-bg {
+      height: 6px;
+      background: var(--bg-primary);
+      border-radius: 4px;
+      overflow: hidden;
+      margin: 0.7rem 0;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--neon-blue);
+      width: 0%;
+      transition: width 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border-radius: 4px;
+    }
+
+    .tag {
+      font-size: 0.65rem;
+      background: var(--bg-primary);
+      padding: 0.2rem 0.6rem;
+      border-radius: 20px;
+      color: var(--text-secondary);
+      display: inline-block;
+    }
+
+    .skill-tags {
+      margin-top: 0.7rem;
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      border-top: 1px solid var(--border-color);
+      margin-top: 2rem;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    footer a { color: var(--neon-blue); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a href="index.html" class="logo">&lt;<span>KITS</span>/&gt;</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="about.html">About</a></li>
+      <li><a href="skills.html" class="active">Skills</a></li>
+      <li><a href="portfolio.html">Portfolio</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div style="display:flex; align-items:center; gap:0.5rem;">
+      <button class="theme-toggle" id="themeToggle" title="Ganti Tema">☀️</button>
+      <div class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <div class="page-wrapper">
+
+    <div class="page-header">
+      <div class="page-header-content">
+        <h1>&lt;<span>Skills</span> /&gt;</h1>
+        <p class="breadcrumb">
+          <a href="index.html">Home</a> 
+        </p>
+      </div>
+    </div>
+
+    <div class="container">
+      <div style="margin-top: 2rem;">
+        <p class="section-title">Technical Proficiency</p>
+        <p class="section-subtitle">Teknologi, framework & tools yang saya kuasai</p>
+      </div>
+
+      <div class="filter-bar">
+        <button class="filter-btn active-filter" data-filter="all">Semua</button>
+        <button class="filter-btn" data-filter="language">Bahasa Pemrograman</button>
+        <button class="filter-btn" data-filter="ide">IDE & Tools</button>
+        <button class="filter-btn" data-filter="database">Database</button>
+      </div>
+
+      <div class="skills-grid" id="skillsGrid">
+        
+        <div class="skill-card" data-category="language">
+          <div class="skill-header">
+            <span class="skill-name">🔷 C++</span>
+            <span class="skill-percent">75%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="75"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">OOP</span>
+            <span class="tag">STL</span>
+            <span class="tag">Pointer</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="language">
+          <div class="skill-header">
+            <span class="skill-name">🐍 Python</span>
+            <span class="skill-percent">70%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="70"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Scripting</span>
+            <span class="tag">Data Structure</span>
+            <span class="tag">Flask</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="language">
+          <div class="skill-header">
+            <span class="skill-name">⚡ JavaScript</span>
+            <span class="skill-percent">72%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="72"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">ES6+</span>
+            <span class="tag">DOM</span>
+            <span class="tag">Async</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="language">
+          <div class="skill-header">
+            <span class="skill-name">🐘 PHP</span>
+            <span class="skill-percent">55%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="55"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">OOP</span>
+            <span class="tag">MySQL</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="ide">
+          <div class="skill-header">
+            <span class="skill-name">🏗️ Embarcadero RAD Studio</span>
+            <span class="skill-percent">68%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="68"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">C++ Builder</span>
+            <span class="tag">VCL</span>
+            <span class="tag">Desktop App</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="ide">
+          <div class="skill-header">
+            <span class="skill-name">💻 VS Code</span>
+            <span class="skill-percent">85%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="85"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Extensions</span>
+            <span class="tag">Debug</span>
+            <span class="tag">Git Integration</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="ide">
+          <div class="skill-header">
+            <span class="skill-name">🐙 Git & GitHub</span>
+            <span class="skill-percent">78%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="78"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Version Control</span>
+            <span class="tag">Branching</span>
+            <span class="tag">Collaboration</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="ide">
+          <div class="skill-header">
+            <span class="skill-name">🎨 Figma</span>
+            <span class="skill-percent">55%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="55"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">UI/UX</span>
+            <span class="tag">Prototype</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="database">
+          <div class="skill-header">
+            <span class="skill-name">🗄️ DataGrip</span>
+            <span class="skill-percent">65%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="65"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">SQL Queries</span>
+            <span class="tag">Database Console</span>
+            <span class="tag">ER Diagram</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="database">
+          <div class="skill-header">
+            <span class="skill-name">🐬 MySQL</span>
+            <span class="skill-percent">60%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="60"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">CRUD</span>
+            <span class="tag">Join</span>
+            <span class="tag">Normalization</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="database">
+          <div class="skill-header">
+            <span class="skill-name">📊 PostgreSQL</span>
+            <span class="skill-percent">50%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="50"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Query</span>
+            <span class="tag">Indexing</span>
+          </div>
+        </div>
+
+        <div class="skill-card" data-category="language">
+          <div class="skill-header">
+            <span class="skill-name">🎨 HTML5 & CSS3</span>
+            <span class="skill-percent">82%</span>
+          </div>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" data-width="82"></div>
+          </div>
+          <div class="skill-tags">
+            <span class="tag">Flexbox</span>
+            <span class="tag">Grid</span>
+            <span class="tag">Responsive</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const skillCards = document.querySelectorAll('.skill-card');
+
+    function filterSkills(category) {
+      skillCards.forEach(card => {
+        const cardCat = card.getAttribute('data-category');
+        if (category === 'all' || cardCat === category) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    }
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const filterValue = this.getAttribute('data-filter');
+        filterButtons.forEach(b => b.classList.remove('active-filter'));
+        this.classList.add('active-filter');
+        filterSkills(filterValue);
+      });
+    });
+
+    function animateAllProgressBars() {
+      const progressFills = document.querySelectorAll('.progress-bar-fill');
+      progressFills.forEach(fill => {
+        const targetWidth = fill.getAttribute('data-width');
+        if (targetWidth) {
+          fill.style.width = targetWidth + '%';
+        }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      setTimeout(animateAllProgressBars, 200);
+    });
+
+    const themeBtn = document.getElementById('themeToggle');
+    let darkMode = true;
+    themeBtn.addEventListener('click', () => {
+      const root = document.documentElement.style;
+      if (darkMode) {
+        root.setProperty('--bg-primary', '#f8fafc');
+        root.setProperty('--bg-secondary', '#eef2ff');
+        root.setProperty('--bg-card', '#ffffff');
+        root.setProperty('--text-primary', '#0f172a');
+        root.setProperty('--text-secondary', '#334155');
+        root.setProperty('--border-color', '#cbd5e1');
+        root.setProperty('--text-muted', '#64748b');
+        themeBtn.textContent = '☀️';
+      } else {
+        root.setProperty('--bg-primary', '#0a0a0f');
+        root.setProperty('--bg-secondary', '#111118');
+        root.setProperty('--bg-card', '#15151f');
+        root.setProperty('--text-primary', '#ededee');
+        root.setProperty('--text-secondary', '#a1a1aa');
+        root.setProperty('--border-color', '#2a2a35');
+        root.setProperty('--text-muted', '#6b7280');
+        themeBtn.textContent = '🌙';
+      }
+      darkMode = !darkMode;
+    });
+
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+    if (hamburger && navLinks) {
+      hamburger.addEventListener('click', () => {
+        if (navLinks.style.display === 'flex') {
+          navLinks.style.display = 'none';
+        } else {
+          navLinks.style.display = 'flex';
+          navLinks.style.flexDirection = 'column';
+          navLinks.style.position = 'absolute';
+          navLinks.style.top = '70px';
+          navLinks.style.left = '0';
+          navLinks.style.right = '0';
+          navLinks.style.backgroundColor = 'var(--bg-secondary)';
+          navLinks.style.padding = '1rem';
+          navLinks.style.gap = '1rem';
+          navLinks.style.borderBottom = '1px solid var(--border-color)';
+          navLinks.style.zIndex = '1000';
+        }
+      });
+    }
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 700 && navLinks) {
+        navLinks.style.display = '';
+        navLinks.style.position = '';
+        navLinks.style.flexDirection = '';
+        navLinks.style.backgroundColor = '';
+        navLinks.style.padding = '';
+        navLinks.style.gap = '';
+        navLinks.style.borderBottom = '';
+      }
+    });
+  </script>
+</body>
+</html>
